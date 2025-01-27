@@ -32,7 +32,7 @@ func main() {
 	if err != nil {
 		panic("Error loading .env file")
 	}
-	psqlInfo := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`, os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
+	psqlInfo := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`, os.Getenv("PGHOST"), os.Getenv("PGPORT"), os.Getenv("PGUSER"), os.Getenv("PGPASSWORD"), os.Getenv("PGDATABASE"))
 
 	DB, err = sql.Open("postgres", psqlInfo)
 	err = DB.Ping()
@@ -48,6 +48,6 @@ func main() {
 	router.PUT("/persons/:id", controllers.UpdatePerson)
 	router.DELETE("/persons/:id", controllers.DeletePerson)
 
-	router.Run(":8080")
+	router.Run(":" + os.Getenv("PGPORT"))
 	fmt.Println("Succesfully connected!")
 }
